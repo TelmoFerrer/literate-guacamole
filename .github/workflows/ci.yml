@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repository-checks:
+    name: Repository checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify engineering foundation files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f AGENTS.md
+          test -f README.md
+          test -f docs/ARCHITECTURE.md
+          test -f docs/DEVELOPMENT_WORKFLOW.md
+          test -f docs/SECURITY.md
+          test -f tasks/README.md
+
+      - name: Set up Node.js (when an application package exists)
+        if: hashFiles('package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up pnpm (when a package manifest exists)
+        if: hashFiles('package.json') != ''
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies (when an application package exists)
+        if: hashFiles('package.json') != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f pnpm-lock.yaml ]]; then
+            pnpm install --frozen-lockfile
+          else
+            echo "::warning::No pnpm-lock.yaml found; using a non-frozen install for this scaffold stage."
+            pnpm install
+          fi
+
+      - name: Run available application checks
+        if: hashFiles('package.json') != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          has_script() {
+            node -e "const p=require('./package.json'); process.exit(p.scripts?.['$1'] ? 0 : 1)"
+          }
+
+          if has_script lint; then pnpm lint; else echo "No lint script configured yet."; fi
+          if has_script typecheck; then pnpm typecheck; else echo "No typecheck script configured yet."; fi
+          if has_script test; then pnpm test; else echo "No test script configured yet."; fi
+          if has_script build; then pnpm build; else echo "No build script configured yet."; fi
