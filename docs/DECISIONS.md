@@ -59,3 +59,15 @@ This file is an index and concise record of currently proposed decisions. Expand
 **Status:** Accepted as engineering principle  
 **Decision:** Use deterministic, tested services for money arithmetic, balances, net worth and forecasts. AI may explain or help investigate results but is not authoritative for numeric outputs.  
 **Rationale:** Financial correctness must be reproducible and testable.
+
+## ADR-010 — Next.js modular monolith foundation
+
+**Status:** Accepted for the initial implementation  
+**Decision:** Use Next.js App Router, React and TypeScript in one application, with domain modules under `src/modules`.  
+**Rationale:** Supports a web-first responsive application without introducing a separate API service prematurely.
+
+## ADR-011 — Tailwind CSS 4 with small reusable components
+
+**Status:** Accepted for the initial UI foundation  
+**Decision:** Use Tailwind CSS 4 as the styling foundation, while keeping application components small and accessible.  
+**Rationale:** Enables consistent iteration without committing to a large component framework before the product UI stabilises.

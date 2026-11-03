@@ -1,27 +1,38 @@
 # MyFinance
 
-MyFinance is a personal financial intelligence application, initially designed for personal use in Portugal, with a data model that can support multiple users in the future.
+A personal finance application designed to bring accounts, transactions, cash, investments, assets, liabilities and net worth into one clear view.
 
 ## Project status
 
-**Stage:** Engineering foundation  
-**Current milestone:** AI-assisted / agentic development setup  
-**Application code:** Not scaffolded yet
+**Stage:** Application foundation  
+**Current milestone:** Sprint 0 — runnable web application and engineering baseline
 
-## Product direction
+## Stack
 
-MyFinance aims to provide a consolidated view of accounts, transactions, cash, investments, assets, liabilities and net worth. The initial product is read-only with respect to financial institutions: it does not initiate payments or execute investments.
+- Next.js 16 App Router and React 19
+- TypeScript
+- Tailwind CSS 4
+- Supabase (PostgreSQL and Auth integration boundary)
+- Vitest and ESLint
+- pnpm
 
-See:
+## Getting started
+
+See [Local development](docs/LOCAL_DEVELOPMENT.md).
+
+## Project documentation
+
 - [Product brief](docs/PRODUCT.md)
 - [Architecture](docs/ARCHITECTURE.md)
-- [Development workflow](docs/DEVELOPMENT_WORKFLOW.md)
 - [Security principles](docs/SECURITY.md)
+- [Development workflow](docs/DEVELOPMENT_WORKFLOW.md)
 - [Architecture decisions](docs/DECISIONS.md)
 - [Sprint 0](tasks/sprint-0.md)
 
-## Working agreement
+## Principles
 
-Humans own product priorities and approve material architecture, security, data-model and release decisions. AI agents may plan, implement, test and review bounded tasks under the rules in [AGENTS.md](AGENTS.md).
-
-No agent may claim a task is complete without reporting the changes made and the checks actually run.
+- Financial correctness and explainability before visual polish.
+- Read-only access to banks and brokers in the initial product.
+- No fabricated financial values in the interface.
+- User-owned data protected at application and database boundaries.
+- AI-generated implementation must be reviewed and tested.
